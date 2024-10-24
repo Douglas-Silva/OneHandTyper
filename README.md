@@ -5,7 +5,7 @@ The current version probably only works on Windows operating system.
 
 ## What is it like to type using this program?
 You will often need to press multiple keys together (chord) to enter a single key. There are editable dictionaries (`dictionaries.py`) that allow you to define which chord triggers which key. For example, pressing `A+F` causes the `B` key to be typed.
-> You can quickly get a feel for what it's like to type using this program by opening the `proof of concept\index.html` file in your browser.
+> You can quickly get a feel for what it's like to type using this program by opening the `proof of concept\index.html` file in your browser, **[click here for an online demonstration](https://douglas-silva.github.io/OneHandTyper/)**.
 
 > Please note that your experience using this program may be completely different if you modify the dictionaries. For example, you can create a dictionary that mirrors the other half of the keyboard while the space bar is held down (for example, pressing the `F` key activates the `F` key, but pressing `F+SPACE` activates the `J` key instead).
 
