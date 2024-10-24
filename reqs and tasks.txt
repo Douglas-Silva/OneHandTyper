@@ -1,0 +1,57 @@
+(V) The program should listen the Native keyboard events (key-press, key-repeat and key-release);
+(V) The program should run in a Python Virtual Evironment exclusive for it;
+    > You MUST WATCH THIS before installing PYTHON. PLEASE DON'T MAKE this MISTAKE. https://www.youtube.com/watch?v=28eLP22SMTA
+    > The Complete Guide to Python Virtual Environments! https://www.youtube.com/watch?v=KxvKCSwlUv8
+(V) The user should be capable of finish the program gracefully;
+(V) The program should be capable of to ignore the keyboard events that it emits;
+(V) It should be possible create a ChordMapping: define a map from Chord (Set of keys) to a key that will be pressed or tapped;
+(V) It should be possible to define mappings that hold a key until the next key is pressed/tapped (Chord mapping of the type "hold");
+(V) For a Chord mapping of the type "hold", when the user taps the Chord twice, the program should hold the key of the mapping until the action of this mapping be triggered again (this is useful for example to hold Shift while typing/chording other keys, using it as CapsLock);
+    > This can work with 3-states for holding keys: "not holding", "holding until the next key", and "holding until be disabled"; each time the action is activated the state of the holdable key changes to the next state, and these 3-states can cycle;
+(V) If the program is "holding until be disabled" a key like 'shift' and the user taps 'shift' as a key that the program does not watch for chords nor supress, or the user does a chord that sends 'shift' key-release, the program should keep the 'shift' pressed sending a new key-press of 'shift';
+    > This helps to ensure a use case like CapsLock, even when the user do a hotkey that contains Shift;
+(V) It should be possible to define multiple ChordDicts, and change the ChordDict doing a Chord (support mappings from Chord to ChordMapping name or index);
+(V) Supress all keys of all Chords in the ChordDict;
+(V) It should be possible to define mappings for one of the hands and the mappings for the other hand be automatically defined (one hand mirrors the other);
+(V) It should be possible to define a mapping that toggles (on/off) the visibility of a window that shows the mappings of the ChordDict (a table with 2 columns, one for the Chord and another for the Action that it triggers, and maybe a 3rd column for the MirroredChord if the dict has mirrored chords);
+(V) It should be possible to define a mapping that finishes the program;
+(V) It should be possible to define a mapping that makes the program sleeps;
+(V) It should be possible to define a hotkey that makes the program awake (only active while the program is sleeping);
+(V) All the keys that the program is holding (from Chord mappings of type "hold") should be released by it (emit key-releases) when it goes to sleep;
+(V) It should be possible to define mappings that do a entire hotkey (like `Ctrl+Shift+I`); and hold them make the last key of the hotkey repeats while the hotkey is kept pressed;
+(V) It should be possible to define mappings that do entire sequences of hotkeys (like `Ctrl+K, Ctrl+I` or `Ctrl+K, I`, or `Alt+L, Alt+O`);
+(V) It should be possible to define mappings that calls a Python function especified by the user or evaluates a Python expression provided by the user;
+(V) It should be displayed the keys that the program is holding (Chord mapping of the type "hold") and the state of each ("holding until the next key", or "holding until be disabled");
+(V) It should be displayed the ActiveChordDict name or title;
+(V) It should be displayed if the program is sleeping or awake;
+    > Solution: if awake the name of the ActiveChordDict is displayed, if sleeping no GUI is displayed;
+(V) The program should have a restart option in the systray and ChordDictEntry for that;
+(V) The user should be warned if there are two or more entries with equivalent chords in the same ChordDict;
+(V) The user should be warned if there is an ActivateChordDict entry with a target ChordDict name inexistent or not found;
+(V) The user should be warned if there are two or more ChordDicts with the same name;
+(V) The user should be notified if a Python expression or function call of a ChordDictEntry raised an error, the error (or it's message) should be show;
+(V) The program should work properly when chords are made with the Shift key being hold, for example cycle the 3-state of Hold Shift when it's chord is '~';
+(V) The program should show in the GUI when a invalid action to Tap or to Hold a key/hotkey failed;
+(V) The program should use try/except for the imports of `dictionaries.py` and `keyboard_layout.py`, and show the failures in the GUI;
+(V) The program should have a ChordDictEntry "Write" that uses `keyboard.write()`, and it should be used for ';';
+(V) BugFix: the program starts to hold the "alt" (or "alt gr") key while sleeping;
+    > Apparentely this happens when "alt gr" is pressed while the program is sleeping, it holds "alt" until "alt" be pressed;
+(V) The program should not crash without displaying an error message when the user defines an invalid chord (simple_chord) for a ChordDictEntry;
+(V) The program should not crash without displaying an error message when the user defines an invalid value for any of the global bindings in the files "dictionaries.py" and "keyboard_layout.py";
+(V) It should be possible to see the names that the program gives to the pressed keys (in order to use such names when creating a ChordDictEntry or KeyAliases);
+    > The program should show in the format `KeyEventData(scan_code=2, name='1', is_keypad=False),`;
+(V) It should be possible see in the GUI the WAKE_UP_HOTKEYS;
+( ) When the user makes a chord that does not exists in the ActiveChordDict, the program should not do the action of any ChordDictEntry while the user release the keys;
+    > For example, there is a ChordDictEntry with the chord "a+b", but the user makes "a+b+c" and there is not a ChordDictEntry for this, in that case the program should not do the action of any ChordDictEntry;
+( ) The program should search for errors in the KEY_ALIASES and show them to the user;
+( ) The program should search for errors in the DICTIONARIES, MIRROR, and WAKE_UP_HOTKEYS and show them to the user;
+( ) BugFix: if the program listens only the key press of some key but not its key release, the program continues considering that such key still pressed and behaves incorrectely;
+    > This problem seems to happen when the keyboard is disconnected while keys are being pressed;
+    > The workaround for this problem could be to show the `pressed_keys_repr` to the user;
+( ) Add to `keyboard_layout.py` the entries for 'alt', 'right alt', 'alt gr', 'shift', 'right shift', 'ctrl', 'right ctrl' and 'caps lock';
+( ) When the program opens or updates a window this window should receive the focus;
+( ) Add the option to make the program wake up or sleep to the system tray icon;
+( ) Document the program for other users;
+    ( ) Document that `KeyAliases.user_key_representation` is what should be used by the users in their chords (the simple_chords to match, not the actions);
+( ) Plublish the program in GitHub and in http://www.onehandkeyboard.org/one-hand-typing-software/
+> Python's keyboard module: https://github.com/boppreh/keyboard?tab=readme-ov-file

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        textarea {
+            width: 100%;
+            min-width: 300px;
+            min-height: 100%;
+            font-size: 3em;
+        }
+
+        .textarea-container {
+            width: 100%;
+        }
+
+        #copyButton {
+            font-size: 1.5em;
+        }
+
+        #clearButton {
+            font-size: 1.5em;
+        }
+
+        .chordSymbolsSeparator {
+            color: gray;
+        }
+
+        #Cntnr {
+            display: flex;
+        }
+
+        li.actionAndChord {
+            white-space: nowrap;
+        }
+
+        .bubble {
+            position: absolute;
+            top: 40px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.638);
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneHandTyper</title>
+</head>
+
+<body>
+    <div id="Cntnr">
+        <div class="textarea-container">
+            <div class="button-container">
+                <button id="copyButton">Copy</button>
+                <button id="clearButton">Clear</button>
+            </div>
+            <textarea type="text" id="chordInput"
+                placeholder="Type your chord..."></textarea>
+        </div>
+        <div id="LeftHandChords"></div>
+        <div id="RightHandChords"></div>
+    </div>
+
+    <script>
+        //@ts-check
+
+        /** @type {HTMLInputElement} */
+        // @ts-ignore
+        const inputElement = document.getElementById('chordInput');
+        const LeftHandChords = document.getElementById('LeftHandChords')
+        const RightHandChords = document.getElementById('RightHandChords')
+        /** @type {HTMLElement} */
+        // @ts-ignore
+        const copyButton = document.getElementById('copyButton');
+        /** @type {HTMLElement} */
+        // @ts-ignore
+        const clearButton = document.getElementById('clearButton');
+
+        const pressedKeys = new Set();
+        let isCapslockActive = false;
+
+        document.addEventListener('keydown', (event) => {
+            if (!event.metaKey && !event.ctrlKey && !event.altKey) event.preventDefault()
+            const pressedKey = event.key.toLowerCase(); // Convert to lowercase for consistency
+            pressedKeys.add(pressedKey); // Add the key to the set
+
+            if (!event.repeat) return //acionar action abaixo somente se for key-repeat
+
+            const chord = Array.from(pressedKeys).sort().join('+'); // Convert the chord to a string
+            if (chord.length === 0) return
+            const action = chordMap[chord]
+            if (!action) return
+            switch (action) {
+                case 'BACKSPACE':
+                    simulateBackspaceOrDelete(true);
+                    break;
+                case 'DELETE':
+                    simulateBackspaceOrDelete(false);
+                    break;
+                case '\n': //Enter
+                    insertChar(action);
+                    break;
+                case ' ': //Space
+                    insertChar(action);
+                    break;
+                default:
+                    insertChar(action)
+            }
+        });
+
+        document.addEventListener('keyup', (event) => {
+            if (!event.metaKey && !event.ctrlKey && !event.altKey) event.preventDefault()
+            console.log(`{ key: '${event.key}', keyCode: ${event.keyCode}, pressedKeys: ${[...pressedKeys]} }`)
+            const chord = Array.from(pressedKeys).sort().join('+'); // Convert the chord to a string
+            pressedKeys.clear();
+            if (chord.length === 0) return
+            const action = chordMap[chord];
+            if (!action) return
+            // console.log(`Chord detected: ${chord} => ${action}`);
+            switch (action) {
+                case 'BACKSPACE':
+                    simulateBackspaceOrDelete(true);
+                    break;
+                case 'DELETE':
+                    simulateBackspaceOrDelete(false);
+                    break;
+                case 'CAPSLOCK':
+                    isCapslockActive = !isCapslockActive;
+                    break;
+                default:
+                    insertChar(action)
+            }
+
+            // const synth = window.speechSynthesis;
+            // const utterance = new SpeechSynthesisUtterance(action);
+            // synth.speak(utterance);
+        });
+
+
+        const chordMap = { //https://www.mdickens.me/typing/letter_frequency.html
+            'q+v': 'DELETE',
+            ' +a+d+f+s': '\n', //ENTER (new line)
+            ' ': ' ',
+            'f': 'e',
+            'd': 't',
+            's': 's',
+            'e': 'i',
+            'q': 'BACKSPACE',
+            'capslock': 'CAPSLOCK',
+            'g': 'h',
+            'v': 'n',
+            'a': 'a',
+            'w': 'o',
+            'r': 'r',
+            'c': 'c',
+            'x': 'd',
+            'z': 'l',
+            'd+f': 'u',
+            'd+s': 'm',
+            'e+w': 'f',
+            'e+r': 'g',
+            'c+x': 'p',
+            'f+s': 'y',
+            'a+d': 'w',
+            'a+f': 'b',
+            'q+w': ',',
+            'e+f+w': '.',
+            'r+w': 'v',
+            'r+q': 'k',
+            'x+v': '-',
+            ' +f': '"',
+            ' +g': '_',
+            ' +d+f': '\'',
+            'a+s': 'x',
+            ' +e': ')',
+            ' +w': '(',
+            'e+r+w': ';',
+            ' +d': '0',
+            'e+f': 'j',
+            ' +r': '1',
+            'e+q': 'q',
+            'e+q+w': '=',
+            ' +s': '2',
+            ' +d+s': ':',
+            'c+v': 'z',
+            'x+z': '/',
+            'v+z': '*',
+            'a+v': '!',
+            'd+v': '?',
+            'a+g': '$',
+            ' +q': '3',
+            ' +a': '5',
+            'd+g': '>',
+            'f+w': '{',
+            'g+w': '}',
+            ' +v': '4',
+            ' +e+r': '9',
+            'f+q': '[',
+            'g+q': ']',
+            ' +r+w': '8',
+            ' +e+q': '6',
+            ' +f+s': '7',
+            ' +x': '\\',
+            'd+g+s': '+',
+            'a+r': '|',
+            'a+e': '&',
+            'a+w': '<',
+            'a+c': '%',
+            'e+g': '@',
+            'a+d+s': '#',
+            ' +a+d': '^',
+            'g+s': '`',
+            ' +a+f': '~',
+            // ...add more chord-to-action mappings as needed
+        }
+        console.log(Object.entries(chordMap).map(([k, v], i) => `TapKey('${k.replace(/ /g, 'space')}', '${v}'),`).join('\n'))
+        normalizeChordMap()
+
+        function normalizeChordMap() {
+            const leftHand = {}
+            const rightHand = {}
+            for (const key in chordMap) { //espelhar ' fdsa' para ' jklç', adicionando novos chords para as mesmas actions
+                if (Object.hasOwnProperty.call(chordMap, key)) {
+                    const action = chordMap[key];
+                    const newKey = key.replace('capslock', '!')
+                        .replace('f', 'j')
+                        .replace('d', 'k')
+                        .replace('s', 'l')
+                        .replace('a', 'ç')
+                        .replace('g', 'h')
+                        .replace('r', 'u')
+                        .replace('e', 'i')
+                        .replace('w', 'o')
+                        .replace('q', 'p')
+                        .replace('v', 'n')
+                        .replace('c', 'm')
+                        .replace('x', ',')
+                        .replace('z', '.')
+                        .replace('!', 'dead')
+                    chordMap[newKey] = action
+
+                    //carregando leftHand e rightHand que serão exibidos na página:
+                    leftHand[key] = action
+                    rightHand[newKey] = action
+                }
+            }
+
+            LeftHandChords?.appendChild(generateChordsDisplay(leftHand))
+            RightHandChords?.appendChild(generateChordsDisplay(rightHand))
+
+            for (const key in chordMap) { //ornenar as letras nas keys do chordMap afim de dar match ao fazer um Chord
+                if (key.includes('+')) {
+                    const newKey = key.split('+').sort().join('+');
+                    if (newKey !== key) {
+                        chordMap[newKey] = chordMap[key]
+                        delete chordMap[key]
+                    }
+                }
+            }
+
+            function generateChordsDisplay(hand) {
+                const ul = document.createElement('ul')
+                const lis = Object.entries(hand).sort((a, b) => a[1].localeCompare(b[1])).map(([chord, action]) => {
+                    const li = document.createElement('li')
+                    li.classList.add('actionAndChord')
+                    li.innerHTML = `<b>${action.toUpperCase().replace('\n', '\\n').replace(' ', 'SPC')}</b> (${chord.replace(' ', 'SPC').toUpperCase().replace(/\+/g, `<span class="chordSymbolsSeparator">+</span>`)})`
+                    return li
+                })
+                ul.append(...lis)
+                return ul
+            }
+        }
+
+        function insertChar(char) {
+            char = isCapslockActive ? char.toUpperCase() : char
+            const startPos = inputElement.selectionStart || 0;
+            const endPos = inputElement.selectionEnd || 0;
+            inputElement.value =
+                inputElement.value.substring(0, startPos) +
+                char +
+                inputElement.value.substring(endPos, inputElement.value.length);
+
+            // Set the cursor position after the inserted char
+            inputElement.selectionStart = startPos + char.length;
+            inputElement.selectionEnd = startPos + char.length;
+        }
+
+        function simulateBackspaceOrDelete(isBackspace) {
+
+            const startPos = inputElement.selectionStart || 0;
+            const endPos = inputElement.selectionEnd || 0;
+
+            if (startPos !== endPos) {
+                // Text is selected; remove the selected portion
+                inputElement.value =
+                    inputElement.value.substring(0, startPos) +
+                    inputElement.value.substring(endPos, inputElement.value.length);
+                // Set the cursor position after the removal
+                inputElement.selectionStart = startPos;
+                inputElement.selectionEnd = startPos;
+                return
+            }
+
+            inputElement.value =
+                inputElement.value.substring(0, startPos - (isBackspace ? 1 : 0)) +
+                inputElement.value.substring(startPos + (isBackspace ? 0 : 1), inputElement.value.length);
+            // Set the cursor position after the removal
+            inputElement.selectionStart = startPos - (isBackspace ? 1 : 0);
+            inputElement.selectionEnd = startPos - (isBackspace ? 1 : 0);
+
+
+        }
+
+
+        const keysToIgnore = [' ', 'f', 'j',
+            'd', 'k',
+            's', 'l',
+            'a', 'ç',
+            'g', 'h',
+            'r', 'u',
+            'e', 'i',
+            'w', 'o',
+            'q', 'p',
+            'v', 'n',
+            'c', 'm',
+            'x', ',',
+            'z', '.',
+            'capslock', 'dead'];
+        inputElement.addEventListener('keydown', (event) => {
+            // Check if the pressed key is the one you want to ignore
+            if (keysToIgnore.includes(event.key.toLowerCase())) {
+                // Ignore the event
+                event.preventDefault();
+                return;
+            }
+            event.stopPropagation()
+        });
+
+        copyButton.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(inputElement.value);
+                // Show a bubble notification
+                const bubble = document.createElement('div');
+                bubble.textContent = 'Text copied!';
+                bubble.classList.add('bubble');
+                document.body.appendChild(bubble);
+                setTimeout(() => {
+                    bubble.remove();
+                }, 2000); // Remove the bubble after 2 seconds
+            } catch (error) {
+                console.error('Error copying text:', error);
+            }
+        });
+
+        clearButton.addEventListener('click', () => {
+            inputElement.value = '';
+        });
+
+    </script>
+</body>
+
+</html>
