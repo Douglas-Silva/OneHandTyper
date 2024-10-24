@@ -13,6 +13,7 @@ You will often need to press multiple keys together (chord) to enter a single ke
 
 ## How to run this program
 1. Click the green "Code" button on this page and then click "Download ZIP";
+![Buttons to Download The Program](<images/download ZIP.jpg>)
 2. Find and extract the downloaded ZIP file;
 3. Optional step: rename the extracted folder (the folder that contains the `src` folder, the `OneHandTyper.bat` file, the `README.md` file, etc.) to `OneHandTyper` and place it in the permanent location where you want it to be (maybe inside the programs folder);
 4. Double click on the file `dist\Executable\OneHandTyper.exe` (that is, the `OneHandTyper.exe` file that is inside the `Executable` folder that is inside the `dist` folder).
@@ -30,10 +31,10 @@ You will often need to press multiple keys together (chord) to enter a single ke
         - It will probably be installed in the path `C:\Users\<your-name>\AppData\Local\Programs\Python\Python<version-number>\python.exe`;
         - For example, on my computer Python `3.12.5` was installed in the path `C:\Users\dougl\AppData\Local\Programs\Python\Python312\python.exe`.
 2. Open the Windows console (`Windows+R`, type `cmd` and press `Enter`), use the `cd` command to navigate to the program folder (the one that contains the `src` folder and the `README.md` file, and which you may have renamed to `OneHandTyper` as suggested), making a command like `cd "path/to/OneHandTyper"` (note that the path is written in quotes);
-![PowerShell commands](<images/cd command.jpg>)
+![cd command](<images/cd command.jpg>)
 
 3. Now, you will run a command to create a `Virtual Environment` in the program folder (This [video](https://www.youtube.com/watch?v=KxvKCSwlUv8) may help you understand what this is). In this command, you will use the Python installation path that you saved in Notepad (this path must be written in quotes if there are spaces in it) forming a command like `C:\Users\<your-name>\AppData\Local\Programs\Python\Python<version-number>\python.exe -m venv .venv`;
-![PowerShell commands](<images/create virtual environment.jpg>)
+![Command to create virtual environment](<images/create virtual environment.jpg>)
 If the command works, a folder called `.venv` will be created inside the program folder.
 
 4. Now you need to run a command that **activates** the virtual environment in the console. The exact command to activate the virtual environment depends on your operating system and which console you are using. When you successfully activate the virtual environment, you will see `(.venv)` (note that it is written in parentheses) appear before the program path in the console. Try the following commands to activate the virtual environment:
@@ -42,14 +43,14 @@ If the command works, a folder called `.venv` will be created inside the program
     - `.venv\Scripts\Activate.ps1` (PowerShell in Windows);
     - `.venv\bin\Activate.ps1`;
     - `source .venv\Scripts\activate` or `source .venv\bin\activate` (Git Bash / Linux / Mac);
-![PowerShell commands](<images/activate virtual environment.jpg>)
+![Command to activate virtual environment](<images/activate virtual environment.jpg>)
 
 5. The final preparation step is to install the project dependencies in the virtual environment. To do this, run the `pip install -r requirements.txt` command and after it finishes, run the `pip install -r requirements-dev.txt` command (this will be useful for regenerating the executable `dist\Executable\OneHandTyper.exe` if necessary).
 - WARNING: Always be sure to run these `pip install` commands while the console has the virtual environment activated, simply check if `(.venv)` appears before the program path in the console, something like `(.venv) path\to\OneHandTyper>` instead of just `path\to\OneHandTyper>`.
-![PowerShell commands](<images/install requirements.jpg>)
+![Commands to install requirements](<images/install requirements.jpg>)
 
 6. You can now run the program in the console using the `.venv\Scripts\python.exe src\main.py` command, as long as the virtual environment is activated in the console.
-![PowerShell commands](<images/run the program.jpg>)
+![Command to run the program](<images/run the program.jpg>)
 
 7. When you want to start the program without typing commands in the console, double-click the file named `OneHandTyper.vbs` or the file named `OneHandTyper.bat`.
     > Using `OneHandTyper.bat` causes the console to remain open while using the program. You can see more information about what is happening in the program in the open console, this can be useful for troubleshooting.
@@ -63,13 +64,13 @@ Open `PowerShell` in the program folder (the folder containing the files `OneHan
 2. `.venv/Scripts/python.exe src/main.py`
 
 In the context of the image below, the folder containing the files `OneHandTyper.vbs` and `OneHandTyper.bat` is called `OneHandTyper`, and it also contains the folders `.venv` and `src`. Here's how the above commands are executed in PowerShell:
-![PowerShell commands](<images/PowerShell OneHandTyper.jpg>)
+![PowerShell commands to activate the virtual environment and run the program](<images/PowerShell OneHandTyper.jpg>)
 
 #### To open Powershell in a specific folder in Windows:
 - Right-click on that folder while holding `SHIFT`, Then select from the context menu the option that allows you to open PowerShell "here"; or
 - With the folder open in Windows File Explorer, click on the `File` tab in the File Explorer (top left corner), then click on the option to open PowerShell; or
 - With the folder open in Windows File Explorer, change the folder path to `powershell` and press `Enter`:
-![PowerShell commands](<images/powershell File Explorer.jpg>) or
+![Open PowerShell from File Explorer](<images/powershell File Explorer.jpg>) or
 - Make the keyboard shortcut `Windows+X` and select open PowerShell from the menu that appears, then, use the `cd` command to navigate to the desired folder:
 ![PowerShell cd command](<images/PowerShell cd command.jpg>)
 
@@ -79,7 +80,7 @@ You may want to regenerate the `dist\Executable\OneHandTyper.exe` executable if 
 To be able to generate the executable again, you must have already performed the steps in the `Advanced Execution` section above.
 
 1. Open the Windows console (`Windows+R`, type `cmd` and press `Enter`), use the `cd` command to navigate to the program folder (the one that contains the `src` folder and the `README.md` file, and which you may have renamed to `OneHandTyper` as suggested), making a command like `cd "path/to/OneHandTyper"` (note that the path is written in quotes);
-![PowerShell commands](<images/cd command.jpg>)
+![cd command](<images/cd command.jpg>)
 
 2. Now you need to run a command that **activates** the virtual environment in the console. The exact command to activate the virtual environment depends on your operating system and which console you are using. When you successfully activate the virtual environment, you will see `(.venv)` (note that it is written in parentheses) appear before the program path in the console. Try the following commands to activate the virtual environment:
     - `.venv\Scripts\activate.bat` (cmd.exe in Windows);
@@ -87,10 +88,10 @@ To be able to generate the executable again, you must have already performed the
     - `.venv\Scripts\Activate.ps1` (PowerShell in Windows);
     - `.venv\bin\Activate.ps1`;
     - `source .venv\Scripts\activate` or `source .venv\bin\activate` (Git Bash / Linux / Mac);
-![PowerShell commands](<images/activate virtual environment.jpg>)
+![Command to activate virtual environment](<images/activate virtual environment.jpg>)
 
 3. To generate the executable again, you will need to run the file `utilities\compile_executable.py`. You can run this file via the command `.venv\Scripts\python.exe utilities\compile_executable.py`;
-![PowerShell commands](<images/run compile_executable.jpg>)
+![Command to compile executable](<images/run compile_executable.jpg>)
     - If the message `WARNING: The output directory "...\dist\Executable" and ALL ITS CONTENTS will be REMOVED! Continue? (y/N)` appears while you are running the command, you will need to type `y` and press `Enter` to continue. But keep in mind that the files `dist\Executable\_internal\dictionaries.py` and `dist\Executable\_internal\keyboard_layout.py` will be deleted, so it might be a good idea to back them up before continuing.
 
 
